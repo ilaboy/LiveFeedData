@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Live Feeds</title>
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--mapbox library-->
+		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+		<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+		<!--google map library -->
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUUesWC4WFt3IXWafrVz7u2J9Eheke9Ys&callback=initMap"></script>
+	</head>
+	<body>
+		<section class="wrapper style1 align-center">
+				<div class="inner">
+					<h2>Earthquake Live Data Feeds</h2>
+					<p>The first map displays a live data feed from the US Geological Survey global earthquake activity. The map was created using Mapbox to illustrate a GeoJSON data that is updated with earthquakes M2.5+ from the last 24 hours. </p>
+					<!-- GeoJSON earthquake map -->
+					<div id='map' style='width: 90vw; height: 75vh;'></div>
+
+					<script>
+						mapboxgl.accessToken = 'pk.eyJ1IjoiaWRhbGlzbGFib3kiLCJhIjoiY2syd3BhaXFkMDM1MTNicnYzdnl5ZTU1aSJ9.sMf0JfpuixHluriTdYN5ww';
+
+						var map = new mapboxgl.Map({
+							container: 'map',
+							style: 'mapbox://styles/idalislaboy/ck3fga3za3rur1cmli79rlypv',
+							center: [-50.527539, 22.694077],
+							zoom: 2
+						});
+
+						map.on('load', function(){
+							map.addSource('earthquakes', {
+										"type": "geojson",
+										"data": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson"
+								});
+
+								map.addLayer({
+									"id":"equakesa",
+									"type":"circle",
+									"source":"earthquakes"
+								});
+						});
+
+						map.on('click', 'equakesa', function (e) {
+									/
+									var coordinates = e.features[0].geometry.coordinates;
+
+									var description = "<h3>"+e.features[0].properties.title+"</h3>"
+									+"<p>Magnitude: "
+									+ e.features[0].properties.mag
+									+ "<br>Status: "
+									+ e.features[0].properties.status
+									+ "<br> Tsunami: "
+									+ '<br><a href="'+ e.features[0].properties.url + '"target="_blank">More</a>'
+									+"</p>";
+
+									new mapboxgl.Popup()
+													.setLngLat(coordinates)
+													.setHTML(description)
+													.addTo(map);
+						});
+					</script>
+					<br>
+					<!-- KML Data Feed -->
+					<p> The following map displays a live data feed about earthquakes with color coded by depth of occurance. The map was created using Google Application Programming Interface (API) to illustrate the data from USGS.
+							<div id='earthquakes' style='width: 90vw; height: 75vh;'></div>
+
+							<script>
+							var mapb;
+							var src='https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month_depth.kml';
+
+							function initMap() {
+				        bmap = new google.maps.Map(document.getElementById('earthquakes'), {
+				          mapTypeId: 'terrain'
+				        });
+
+				        var kmlLayer = new google.maps.KmlLayer(src, {
+				          preserveViewport: false,
+				          map: bmap
+				        });
+				      }
+							</script>
+					</div>
+				</section>
+				</body>
+		</html>
+</head>
