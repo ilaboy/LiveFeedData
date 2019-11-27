@@ -4,7 +4,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Live Feeds</title>
-		<link rel="stylesheet" href="assets/css/main.css" />
+
 		<!--mapbox library-->
 		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
 		<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
@@ -43,7 +43,7 @@
 						});
 
 						map.on('click', 'equakesa', function (e) {
-									/
+
 									var coordinates = e.features[0].geometry.coordinates;
 
 									var description = "<h3>"+e.features[0].properties.title+"</h3>"
@@ -52,7 +52,7 @@
 									+ "<br>Status: "
 									+ e.features[0].properties.status
 									+ "<br> Tsunami: "
-									+ '<br><a href="'+ e.features[0].properties.url + '"target="_blank">More</a>'
+									+ '<br><a href="'+ e.features[0].properties.url + '"target="_blank">More Details</a>'
 									+"</p>";
 
 									new mapboxgl.Popup()
